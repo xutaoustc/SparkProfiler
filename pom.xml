@@ -6,19 +6,28 @@
 
     <groupId>SparkProfiler</groupId>
     <artifactId>SparkProfiler</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>Streaming</module>
+        <module>core</module>
+    </modules>
 
 
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_2.12</artifactId>
-            <version>3.0.0-preview2</version>
-        </dependency>
-    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.spark</groupId>
+                <artifactId>spark-streaming_2.12</artifactId>
+                <version>3.0.0-preview2</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 
     <build>
-        <finalName>SparkProfiler</finalName>
+        <finalName>SparkProfilerStreaming</finalName>
         <plugins>
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
@@ -50,7 +59,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.ctyun.sparkprofiler.Main</mainClass>
+                            <mainClass>com.ctyun.sparkprofiler.streaming.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
