@@ -7,8 +7,8 @@ class ConsoleSink extends Sink{
   override def sinkSimpleApp(simpleAppSinkInfo:SimpleAppSinkInfo): Unit = {
     println(
       s"""
-         |Task指标汇总 ,applicationID:${simpleAppSinkInfo.applicationID},appName:${simpleAppSinkInfo.appName}, task总数:${simpleAppSinkInfo.taskCount}
-         |启动时间: ${simpleAppSinkInfo.startTime}, 结束时间: ${simpleAppSinkInfo.endTime}
+         |Task指标汇总 ,applicationID:${simpleAppSinkInfo.applicationID},appName:${simpleAppSinkInfo.appName}, sparkUser:${simpleAppSinkInfo.sparkUser}
+         |task总数:${simpleAppSinkInfo.taskCount},启动时间: ${simpleAppSinkInfo.startTime}, 结束时间: ${simpleAppSinkInfo.endTime}
        """.stripMargin)
 
   }

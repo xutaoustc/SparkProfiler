@@ -26,6 +26,7 @@ class EventHistoryListener() extends SparkListener{
   override def onApplicationStart(applicationStart: SparkListenerApplicationStart): Unit = {
     appInfo.applicationID = applicationStart.appId.getOrElse("NA")
     appInfo.appName = applicationStart.appName
+    appInfo.sparkUser = applicationStart.sparkUser
     appInfo.startTime     = applicationStart.time
   }
 

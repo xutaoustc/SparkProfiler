@@ -10,11 +10,12 @@ class MysqlSink() extends Sink{
 
   override def sinkSimpleApp(simpleAppSinkInfo:SimpleAppSinkInfo): Unit = {
     val qr = new QueryRunner(ds);
-    val sql="replace into job_overview(appId,appName,taskCount,startTime,endTime) values(?,?,?,?,?)";
+    val sql="replace into job_overview(appId,appName,sparkUser,taskCount,startTime,endTime) values(?,?,?,?,?,?)";
     try{
       qr.update(sql,
         simpleAppSinkInfo.applicationID,
         simpleAppSinkInfo.appName,
+        simpleAppSinkInfo.sparkUser,
         simpleAppSinkInfo.taskCount.toString,
         simpleAppSinkInfo.startTime.toString,
         simpleAppSinkInfo.endTime.toString)

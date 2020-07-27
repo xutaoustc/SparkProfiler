@@ -20,6 +20,7 @@ object Main {
 
     val path = args(0)
     val stream = ssc.receiverStream(new CustomDirectoryMonitorReceiver(path))
+        .repartition(8)
 
     stream.foreachRDD(rdd=>{
       rdd.foreach(eachFile=>

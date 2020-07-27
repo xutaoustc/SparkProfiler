@@ -1,17 +1,24 @@
 package com.ctyun.sparkprofiler.core.analyzer
 
 import com.ctyun.sparkprofiler.core.common.AppContext
+import com.ctyun.sparkprofiler.sink.Sink
+import com.ctyun.sparkprofiler.sink.domain.SimpleAppSinkInfo
 
-import scala.collection.mutable
 
+class SimpleAppAnalyzer extends AppAnalyzer {
 
-class SimpleAppAnalyzer extends  AppAnalyzer {
-
-  def analyze(appContext: AppContext, startTime: Long, endTime: Long): String = {
+  def analyze(appContext: AppContext, startTime: Long, endTime: Long): Unit = {
     val ac = appContext.filterByStartAndEndTime(startTime, endTime)
-    val out = new mutable.StringBuilder()
 
-    ac.appMetrics.print("Task指标汇总", out)
-    out.toString()
+    Sink.getSink().sinkSimpleApp(
+      SimpleAppSinkInfo(
+        ac.appInfo.applicationID,
+        ac.appInfo.appName,
+        ac.appInfo.sparkUser,
+        ac.appMetrics.count,
+        ac.appInfo.startTime,
+        ac.appInfo.endTime
+      )
+    )
   }
 }
