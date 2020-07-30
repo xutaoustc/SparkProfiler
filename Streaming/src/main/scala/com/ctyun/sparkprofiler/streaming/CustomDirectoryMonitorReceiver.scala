@@ -10,20 +10,20 @@ import org.apache.spark.internal.Logging
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.streaming.receiver.Receiver
 
-class CustomDirectoryMonitorReceiver(path:String, var latestTime:Long=0)
+class CustomDirectoryMonitorReceiver(path:String)
   extends Receiver[String](StorageLevel.MEMORY_AND_DISK_2) with Logging {
 
   private lazy val fs = new Path(path).getFileSystem(new Configuration())
 
-  private val loader = new CacheLoader[FileStatus,EventLogFileReader] {
+  private lazy val loader = new CacheLoader[FileStatus,EventLogFileReader] {
     override def load(entry: FileStatus) = {
       EventLogFileReader(fs, entry).get
     }
   }
 
-  private val cache = CacheBuilder.newBuilder()
+  private lazy val cache = CacheBuilder.newBuilder()
     .expireAfterWrite(1,TimeUnit.DAYS)
-    .build(loader);
+    .build(loader)
 
   def onStart() {
     new Thread("receiver") {
@@ -64,7 +64,8 @@ class CustomDirectoryMonitorReceiver(path:String, var latestTime:Long=0)
         val completed = Option(fs.listStatus(new Path(path))).map(_.toSeq).getOrElse(Nil)
           .flatMap( status => {
             if(!cache.asMap().containsKey(status)){
-              Option((status, EventLogFileReader(fs, status).get))
+              val reader = EventLogFileReader(fs, status)
+              reader.flatMap( reader => Option((status,reader)) )
             }else Nil
           })
           .filter( _._2.completed )

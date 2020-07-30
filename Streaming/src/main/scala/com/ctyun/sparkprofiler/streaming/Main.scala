@@ -19,8 +19,7 @@ object Main {
               }
 
     val path = args(0)
-    val latestTime = args(1)
-    val stream = ssc.receiverStream(new CustomDirectoryMonitorReceiver(path, latestTime.toLong))
+    val stream = ssc.receiverStream(new CustomDirectoryMonitorReceiver(path))
         .repartition(256)
 
     stream.foreachRDD(rdd=>{
