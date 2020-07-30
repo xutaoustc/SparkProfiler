@@ -2,7 +2,7 @@ package com.ctyun.sparkprofiler.core.timespan
 
 import scala.collection.mutable
 
-class JobTimeSpan(val jobID: Long) extends TimeSpan {
+class JobTimeSpan(val jobID: Int) extends TimeSpan {
   var stageMap = new mutable.HashMap[Int, StageTimeSpan]()
   def addStage(stage: StageTimeSpan): Unit = {
     stageMap (stage.stageID) = stage

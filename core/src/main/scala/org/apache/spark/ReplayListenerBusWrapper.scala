@@ -13,7 +13,7 @@ class ReplayListenerBusWrapper {
 
   def replay(logData: InputStream,
              sourceName: String,
-             maybeTruncated: Boolean = false): Unit ={
+             maybeTruncated: Boolean = false):Boolean  ={
     bus.replay(logData,sourceName, maybeTruncated)
   }
 }

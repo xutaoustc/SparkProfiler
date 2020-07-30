@@ -5,12 +5,15 @@ import java.util.Properties
 import com.ctyun.sparkprofiler.core.common.AppContext
 import com.ctyun.sparkprofiler.sink.SinkMethod.SinkMethod
 import com.ctyun.sparkprofiler.sink.method.console.ConsoleSink
-import com.ctyun.sparkprofiler.sink.domain.SimpleAppSinkInfo
+import com.ctyun.sparkprofiler.sink.domain.{SimpleAppSinkInfo, SimpleJobSinkInfo, SimpleStageSinkInfo}
 import com.ctyun.sparkprofiler.sink.method.mysql.MysqlSink
 
 
 abstract class Sink{
-  def sinkSimpleApp(simpleAppSinkInfo: SimpleAppSinkInfo):Unit
+  def sinkSimpleApp(simpleAppSinkInfo: SimpleAppSinkInfo,
+                    simpleJobSinkInfo: Iterable[SimpleJobSinkInfo],
+                    simpleStageSinkInfo: Iterable[SimpleStageSinkInfo]
+                   ):Unit
 }
 
 object Sink {

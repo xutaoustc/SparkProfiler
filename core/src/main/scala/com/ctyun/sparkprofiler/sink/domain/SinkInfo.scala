@@ -8,3 +8,20 @@ case class SimpleAppSinkInfo(
                             startTime:Long,
                             endTime:Long
                             )
+
+case class SimpleJobSinkInfo(
+                              applicationID: String,
+                              jobID: Int,
+                              taskCount:Long,
+                              startTime:Long,
+                              endTime:Long
+                            )
+
+case class SimpleStageSinkInfo(
+                              applicationID: String,
+                              jobID: Int,
+                              stageID: Int,
+                              taskCount:Long,
+                              startTime:Long,
+                              endTime:Long
+                            )

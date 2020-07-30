@@ -2,6 +2,7 @@ package com.ctyun.sparkprofiler.streaming
 
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.Path
+import org.apache.spark.deploy.history.EventLogFileReader
 import org.apache.spark.internal.Logging
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.streaming.receiver.Receiver
@@ -47,18 +48,21 @@ class CustomDirectoryMonitorReceiver(path:String)
   private def receive() {
     while(true){
       doWithRetry {
-        val allFile = fs.listStatus(new Path(path)).filter(path => !path.getPath.toString.contains(".inprogress") && !path.isDirectory )
+        val completed = Option(fs.listStatus(new Path(path))).map(_.toSeq).getOrElse(Nil)
+          .flatMap { entry => EventLogFileReader(fs, entry) }
+          .filter( _.completed )
 
         if( latestTime == 0){
-          allFile.map(_.getPath.toString).foreach(store)
+          completed.map(_.rootPath.toString).foreach(store)
         }else{
-          allFile.filter(f=>f.getModificationTime>=latestTime && f.getPath.toString!=latestFileName ).map(_.getPath.toString).foreach(store)
+          completed.filter(f=>f.modificationTime>=latestTime && f.rootPath.toString!=latestFileName ).map(_.rootPath.toString).foreach(store)
         }
 
-        if(allFile.size != 0){
-          val latestFile = allFile.maxBy(_.getModificationTime)
-          latestTime = latestFile.getModificationTime
-          latestFileName = latestFile.getPath.toString
+
+        if(completed.size != 0){
+          val latestLog = completed.maxBy(_.modificationTime)
+          latestTime = latestLog.modificationTime
+          latestFileName = latestLog.rootPath.toString
         }
       }
 
