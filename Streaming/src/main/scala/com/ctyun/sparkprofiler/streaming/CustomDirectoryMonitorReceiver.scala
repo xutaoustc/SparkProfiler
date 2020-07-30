@@ -1,22 +1,32 @@
 package com.ctyun.sparkprofiler.streaming
 
+import java.util.concurrent.TimeUnit
+
+import com.google.common.cache.{CacheBuilder, CacheLoader}
 import org.apache.hadoop.conf.Configuration
-import org.apache.hadoop.fs.Path
+import org.apache.hadoop.fs.{FileStatus, Path}
 import org.apache.spark.deploy.history.EventLogFileReader
 import org.apache.spark.internal.Logging
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.streaming.receiver.Receiver
 
-class CustomDirectoryMonitorReceiver(path:String)
+class CustomDirectoryMonitorReceiver(path:String, var latestTime:Long=0)
   extends Receiver[String](StorageLevel.MEMORY_AND_DISK_2) with Logging {
 
   private lazy val fs = new Path(path).getFileSystem(new Configuration())
-  private var latestTime = 0l
-  private var latestFileName:String = _
 
+  private val loader = new CacheLoader[FileStatus,EventLogFileReader] {
+    override def load(entry: FileStatus) = {
+      EventLogFileReader(fs, entry).get
+    }
+  }
+
+  private val cache = CacheBuilder.newBuilder()
+    .expireAfterWrite(1,TimeUnit.DAYS)
+    .build(loader);
 
   def onStart() {
-    new Thread("Socket Receiver") {
+    new Thread("receiver") {
       override def run() { receive() }
     }.start()
   }
@@ -38,7 +48,10 @@ class CustomDirectoryMonitorReceiver(path:String)
           if(i==3)
             throw x
           else
+          {
+            x.printStackTrace()
             i+=1
+          }
         }
       }
     }
@@ -49,24 +62,21 @@ class CustomDirectoryMonitorReceiver(path:String)
     while(true){
       doWithRetry {
         val completed = Option(fs.listStatus(new Path(path))).map(_.toSeq).getOrElse(Nil)
-          .flatMap { entry => EventLogFileReader(fs, entry) }
-          .filter( _.completed )
+          .flatMap( status => {
+            if(!cache.asMap().containsKey(status)){
+              Option((status, EventLogFileReader(fs, status).get))
+            }else Nil
+          })
+          .filter( _._2.completed )
 
-        if( latestTime == 0){
-          completed.map(_.rootPath.toString).foreach(store)
-        }else{
-          completed.filter(f=>f.modificationTime>=latestTime && f.rootPath.toString!=latestFileName ).map(_.rootPath.toString).foreach(store)
-        }
+        completed.foreach{ case (status, reader)=>{
+          cache.put(status, reader)
+        }}
 
-
-        if(completed.size != 0){
-          val latestLog = completed.maxBy(_.modificationTime)
-          latestTime = latestLog.modificationTime
-          latestFileName = latestLog.rootPath.toString
-        }
+        completed.map{ case (_, reader)=> reader.rootPath.toString}.foreach(store)
       }
 
-      Thread.sleep(10000)
+      Thread.sleep(30000)
     }
   }
 }

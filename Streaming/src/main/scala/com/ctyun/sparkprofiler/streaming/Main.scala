@@ -12,15 +12,16 @@ object Main {
 
     val ssc = if( StringUtils.isNotBlank( System.getProperty("master"))){
                 val conf = new SparkConf().setAppName("SparkProfiler").setMaster(System.getProperty("master"))
-                new StreamingContext(conf, Seconds(30))
+                new StreamingContext(conf, Seconds(60))
               }else{
                 val conf = new SparkConf().setAppName("SparkProfiler")
-                new StreamingContext(conf, Seconds(30))
+                new StreamingContext(conf, Seconds(60))
               }
 
     val path = args(0)
-    val stream = ssc.receiverStream(new CustomDirectoryMonitorReceiver(path))
-        .repartition(64)
+    val latestTime = args(1)
+    val stream = ssc.receiverStream(new CustomDirectoryMonitorReceiver(path, latestTime.toLong))
+        .repartition(256)
 
     stream.foreachRDD(rdd=>{
       rdd.foreach(eachFile=>
