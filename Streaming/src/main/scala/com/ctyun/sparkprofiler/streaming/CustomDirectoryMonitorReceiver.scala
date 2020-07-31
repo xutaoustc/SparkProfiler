@@ -22,7 +22,7 @@ class CustomDirectoryMonitorReceiver(path:String)
   }
 
   private lazy val cache = CacheBuilder.newBuilder()
-    .expireAfterWrite(1,TimeUnit.DAYS)
+    .expireAfterWrite(6,TimeUnit.HOURS)
     .build(loader)
 
   def onStart() {

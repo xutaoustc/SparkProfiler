@@ -9,6 +9,7 @@ import scala.collection.mutable.ListBuffer
 
 
 class EventHistoryListener() extends SparkListener{
+  private var isStreamingApp     = false
   protected val appInfo          = ApplicationInfo()
 
   protected val jobMap           = new mutable.HashMap[Long, JobTimeSpan]
@@ -31,6 +32,10 @@ class EventHistoryListener() extends SparkListener{
   }
 
   override def onApplicationEnd(applicationEnd: SparkListenerApplicationEnd): Unit = {
+    // we now do not want to analyze streaming app now
+    if(isStreamingApp)
+      return
+
     appInfo.endTime = applicationEnd.time
 
     jobMap.foreach{
@@ -55,6 +60,11 @@ class EventHistoryListener() extends SparkListener{
 
 
   override def onJobStart(jobStart: SparkListenerJobStart) {
+    if(jobStart.properties.getProperty("callSite.long").contains("StreamingContext")){
+      isStreamingApp = true
+    }
+
+
     val jobTimeSpan = new JobTimeSpan(jobStart.jobId)
     jobTimeSpan.setStartTime(jobStart.time)
     jobMap(jobStart.jobId) = jobTimeSpan
