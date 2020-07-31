@@ -53,6 +53,14 @@ object AggregateMetrics extends Enumeration {
   executorRuntime,
   jvmGCTime,
   executorCpuTime,
+
+  memoryBytesSpilled,
+  diskBytesSpilled,
+  peakExecutionMemory,
+  inputBytesRead,
+  outputBytesWritten,
+  resultSize,
+
   shuffleWriteTime,
   shuffleWriteBytesWritten,
   shuffleWriteRecordsWritten,
@@ -60,12 +68,6 @@ object AggregateMetrics extends Enumeration {
   shuffleReadBytesRead,
   shuffleReadRecordsRead,
   shuffleReadLocalBlocks,
-  shuffleReadRemoteBlocks,
-  resultSize,
-  inputBytesRead,
-  outputBytesWritten,
-  memoryBytesSpilled,
-  diskBytesSpilled,
-  peakExecutionMemory
+  shuffleReadRemoteBlocks
   = Value
 }

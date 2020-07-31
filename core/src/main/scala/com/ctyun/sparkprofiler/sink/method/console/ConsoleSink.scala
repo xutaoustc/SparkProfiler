@@ -10,7 +10,10 @@ class ConsoleSink extends Sink{
     println(
       s"""
          |Task指标汇总 ,applicationID:${simpleAppSinkInfo.applicationID},appName:${simpleAppSinkInfo.appName}, sparkUser:${simpleAppSinkInfo.sparkUser}
-         |task总数:${simpleAppSinkInfo.taskCount},taskDuration:${simpleAppSinkInfo.taskDuration},executorRuntime:${simpleAppSinkInfo.executorRuntime} 启动时间: ${simpleAppSinkInfo.startTime}, 结束时间: ${simpleAppSinkInfo.endTime}
+         |task总数:${simpleAppSinkInfo.taskCount},taskDuration:${simpleAppSinkInfo.taskDuration},executorRuntime:${simpleAppSinkInfo.executorRuntime},jvmGCTime:${simpleAppSinkInfo.jvmGCTime},
+         |memoryBytesSpilled:${simpleAppSinkInfo.memoryBytesSpilled}, diskBytesSpilled:${simpleAppSinkInfo.diskBytesSpilled},peakExecutionMemory:${simpleAppSinkInfo.peakExecutionMemory},
+         |inputBytesRead:${simpleAppSinkInfo.inputBytesRead},outputBytesWritten:${simpleAppSinkInfo.outputBytesWritten},resultSize:${simpleAppSinkInfo.resultSize}
+         |启动时间: ${simpleAppSinkInfo.startTime}, 结束时间: ${simpleAppSinkInfo.endTime}
        """.stripMargin)
 
     simpleJobSinkInfo.foreach(println(_))

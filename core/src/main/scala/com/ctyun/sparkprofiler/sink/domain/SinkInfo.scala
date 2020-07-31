@@ -8,6 +8,12 @@ case class SimpleAppSinkInfo(
                             taskDuration:Long,
                             executorRuntime:Long,
                             jvmGCTime:Long,
+                            memoryBytesSpilled:Long,
+                            diskBytesSpilled:Long,
+                            peakExecutionMemory:Long,
+                            inputBytesRead:Long,
+                            outputBytesWritten:Long,
+                            resultSize:Long,
                             startTime:Long,
                             endTime:Long
                             )
@@ -19,6 +25,12 @@ case class SimpleJobSinkInfo(
                               taskDuration:Long,
                               executorRuntime:Long,
                               jvmGCTime:Long,
+                              memoryBytesSpilled:Long,
+                              diskBytesSpilled:Long,
+                              peakExecutionMemory:Long,
+                              inputBytesRead:Long,
+                              outputBytesWritten:Long,
+                              resultSize:Long,
                               startTime:Long,
                               endTime:Long
                             )
@@ -31,6 +43,12 @@ case class SimpleStageSinkInfo(
                               taskDuration:Long,
                               executorRuntime:Long,
                               jvmGCTime:Long,
+                              memoryBytesSpilled:Long,
+                              diskBytesSpilled:Long,
+                              peakExecutionMemory:Long,
+                              inputBytesRead:Long,
+                              outputBytesWritten:Long,
+                              resultSize:Long,
                               startTime:Long,
                               endTime:Long
                             )

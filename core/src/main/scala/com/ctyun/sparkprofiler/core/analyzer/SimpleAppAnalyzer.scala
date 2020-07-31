@@ -19,6 +19,12 @@ class SimpleAppAnalyzer extends AppAnalyzer {
         ac.appMetrics.map(AggregateMetrics.taskDuration).value,
         ac.appMetrics.map(AggregateMetrics.executorRuntime).value,
         ac.appMetrics.map(AggregateMetrics.jvmGCTime).value,
+        ac.appMetrics.map(AggregateMetrics.memoryBytesSpilled).value,
+        ac.appMetrics.map(AggregateMetrics.diskBytesSpilled).value,
+        ac.appMetrics.map(AggregateMetrics.peakExecutionMemory).value,
+        ac.appMetrics.map(AggregateMetrics.inputBytesRead).value,
+        ac.appMetrics.map(AggregateMetrics.outputBytesWritten).value,
+        ac.appMetrics.map(AggregateMetrics.resultSize).value,
         ac.appInfo.startTime,
         ac.appInfo.endTime
       ),
@@ -31,6 +37,12 @@ class SimpleAppAnalyzer extends AppAnalyzer {
             jobTimeSpan.metrics.map(AggregateMetrics.taskDuration).value,
             jobTimeSpan.metrics.map(AggregateMetrics.executorRuntime).value,
             jobTimeSpan.metrics.map(AggregateMetrics.jvmGCTime).value,
+            jobTimeSpan.metrics.map(AggregateMetrics.memoryBytesSpilled).value,
+            jobTimeSpan.metrics.map(AggregateMetrics.diskBytesSpilled).value,
+            jobTimeSpan.metrics.map(AggregateMetrics.peakExecutionMemory).value,
+            jobTimeSpan.metrics.map(AggregateMetrics.inputBytesRead).value,
+            jobTimeSpan.metrics.map(AggregateMetrics.outputBytesWritten).value,
+            jobTimeSpan.metrics.map(AggregateMetrics.resultSize).value,
             jobTimeSpan.startTime,
             jobTimeSpan.endTime
           )
@@ -46,6 +58,12 @@ class SimpleAppAnalyzer extends AppAnalyzer {
             stageTimeSpan.metrics.map(AggregateMetrics.taskDuration).value,
             stageTimeSpan.metrics.map(AggregateMetrics.executorRuntime).value,
             stageTimeSpan.metrics.map(AggregateMetrics.jvmGCTime).value,
+            stageTimeSpan.metrics.map(AggregateMetrics.memoryBytesSpilled).value,
+            stageTimeSpan.metrics.map(AggregateMetrics.diskBytesSpilled).value,
+            stageTimeSpan.metrics.map(AggregateMetrics.peakExecutionMemory).value,
+            stageTimeSpan.metrics.map(AggregateMetrics.inputBytesRead).value,
+            stageTimeSpan.metrics.map(AggregateMetrics.outputBytesWritten).value,
+            stageTimeSpan.metrics.map(AggregateMetrics.resultSize).value,
             stageTimeSpan.startTime,
             stageTimeSpan.endTime
           )

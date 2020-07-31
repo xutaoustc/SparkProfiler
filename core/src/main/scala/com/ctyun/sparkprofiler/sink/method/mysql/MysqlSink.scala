@@ -14,7 +14,7 @@ class MysqlSink() extends Sink{
     val qr = new QueryRunner(ds);
 
     try{
-      val applicationSQL="replace into application_overview(appId,appName,sparkUser,taskCount,taskDuration,executorRuntime,jvmGCTime,startTime,endTime) values(?,?,?,?,?,?,?,?,?)"
+      val applicationSQL="replace into application_overview(appId,appName,sparkUser,taskCount,taskDuration,executorRuntime,jvmGCTime,memoryBytesSpilled,diskBytesSpilled,peakExecutionMemory,inputBytesRead,outputBytesWritten,resultSize,startTime,endTime) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
       qr.update(applicationSQL,
         simpleAppSinkInfo.applicationID,
         simpleAppSinkInfo.appName,
@@ -23,10 +23,16 @@ class MysqlSink() extends Sink{
         simpleAppSinkInfo.taskDuration.toString,
         simpleAppSinkInfo.executorRuntime.toString,
         simpleAppSinkInfo.jvmGCTime.toString,
+        simpleAppSinkInfo.memoryBytesSpilled.toString,
+        simpleAppSinkInfo.diskBytesSpilled.toString,
+        simpleAppSinkInfo.peakExecutionMemory.toString,
+        simpleAppSinkInfo.inputBytesRead.toString,
+        simpleAppSinkInfo.outputBytesWritten.toString,
+        simpleAppSinkInfo.resultSize.toString,
         simpleAppSinkInfo.startTime.toString,
         simpleAppSinkInfo.endTime.toString)
 
-      val jobSQL="replace into job_overview(appId,jobID,taskCount,taskDuration,executorRuntime,jvmGCTime,startTime,endTime) values(?,?,?,?,?,?,?,?)"
+      val jobSQL="replace into job_overview(appId,jobID,taskCount,taskDuration,executorRuntime,jvmGCTime,memoryBytesSpilled,diskBytesSpilled,peakExecutionMemory,inputBytesRead,outputBytesWritten,resultSize,startTime,endTime) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
       simpleJobSinkInfo.foreach(job=>{
         qr.update(jobSQL,
           job.applicationID,
@@ -35,11 +41,17 @@ class MysqlSink() extends Sink{
           job.taskDuration.toString,
           job.executorRuntime.toString,
           job.jvmGCTime.toString,
+          job.memoryBytesSpilled.toString,
+          job.diskBytesSpilled.toString,
+          job.peakExecutionMemory.toString,
+          job.inputBytesRead.toString,
+          job.outputBytesWritten.toString,
+          job.resultSize.toString,
           job.startTime.toString,
           job.endTime.toString)
       })
 
-      val stageSQL="replace into stage_overview(appId,jobID,stageID,taskCount,taskDuration,executorRuntime,jvmGCTime,startTime,endTime) values(?,?,?,?,?,?,?,?,?)"
+      val stageSQL="replace into stage_overview(appId,jobID,stageID,taskCount,taskDuration,executorRuntime,jvmGCTime,memoryBytesSpilled,diskBytesSpilled,peakExecutionMemory,inputBytesRead,outputBytesWritten,resultSize,startTime,endTime) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
       simpleStageSinkInfo.foreach(stage=>{
         qr.update(stageSQL,
           stage.applicationID,
@@ -49,6 +61,12 @@ class MysqlSink() extends Sink{
           stage.taskDuration.toString,
           stage.executorRuntime.toString,
           stage.jvmGCTime.toString,
+          stage.memoryBytesSpilled.toString,
+          stage.diskBytesSpilled.toString,
+          stage.peakExecutionMemory.toString,
+          stage.inputBytesRead.toString,
+          stage.outputBytesWritten.toString,
+          stage.resultSize.toString,
           stage.startTime.toString,
           stage.endTime.toString)
       })
