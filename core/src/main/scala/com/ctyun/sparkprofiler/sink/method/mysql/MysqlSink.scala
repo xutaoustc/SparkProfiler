@@ -14,32 +14,41 @@ class MysqlSink() extends Sink{
     val qr = new QueryRunner(ds);
 
     try{
-      val applicationSQL="replace into application_overview(appId,appName,sparkUser,taskCount,startTime,endTime) values(?,?,?,?,?,?)"
+      val applicationSQL="replace into application_overview(appId,appName,sparkUser,taskCount,taskDuration,executorRuntime,jvmGCTime,startTime,endTime) values(?,?,?,?,?,?,?,?,?)"
       qr.update(applicationSQL,
         simpleAppSinkInfo.applicationID,
         simpleAppSinkInfo.appName,
         simpleAppSinkInfo.sparkUser,
         simpleAppSinkInfo.taskCount.toString,
+        simpleAppSinkInfo.taskDuration.toString,
+        simpleAppSinkInfo.executorRuntime.toString,
+        simpleAppSinkInfo.jvmGCTime.toString,
         simpleAppSinkInfo.startTime.toString,
         simpleAppSinkInfo.endTime.toString)
 
-      val jobSQL="replace into job_overview(appId,jobID,taskCount,startTime,endTime) values(?,?,?,?,?)"
+      val jobSQL="replace into job_overview(appId,jobID,taskCount,taskDuration,executorRuntime,jvmGCTime,startTime,endTime) values(?,?,?,?,?,?,?,?)"
       simpleJobSinkInfo.foreach(job=>{
         qr.update(jobSQL,
           job.applicationID,
           job.jobID.toString,
           job.taskCount.toString,
+          job.taskDuration.toString,
+          job.executorRuntime.toString,
+          job.jvmGCTime.toString,
           job.startTime.toString,
           job.endTime.toString)
       })
 
-      val stageSQL="replace into stage_overview(appId,jobID,stageID,taskCount,startTime,endTime) values(?,?,?,?,?,?)"
+      val stageSQL="replace into stage_overview(appId,jobID,stageID,taskCount,taskDuration,executorRuntime,jvmGCTime,startTime,endTime) values(?,?,?,?,?,?,?,?,?)"
       simpleStageSinkInfo.foreach(stage=>{
         qr.update(stageSQL,
           stage.applicationID,
           stage.jobID.toString,
           stage.stageID.toString,
           stage.taskCount.toString,
+          stage.taskDuration.toString,
+          stage.executorRuntime.toString,
+          stage.jvmGCTime.toString,
           stage.startTime.toString,
           stage.endTime.toString)
       })

@@ -80,12 +80,18 @@ class EventHistoryListener() extends SparkListener{
   }
 
   override def onJobEnd(jobEnd: SparkListenerJobEnd): Unit = {
+    if(isStreamingApp)
+      return
+
     val jobTimeSpan = jobMap(jobEnd.jobId)
     jobTimeSpan.setEndTime(jobEnd.time)
   }
 
 
   override def onExecutorAdded(executorAdded: SparkListenerExecutorAdded): Unit = {
+    if(isStreamingApp)
+      return
+
     executorMap.getOrElseUpdate(executorAdded.executorId, {
         val timeSpan = new ExecutorTimeSpan(executorAdded.executorId,
                             executorAdded.executorInfo.executorHost,
@@ -102,6 +108,9 @@ class EventHistoryListener() extends SparkListener{
   }
 
   override def onExecutorRemoved(executorRemoved: SparkListenerExecutorRemoved): Unit = {
+    if(isStreamingApp)
+      return
+
     val executorTimeSpan = executorMap(executorRemoved.executorId)
     executorTimeSpan.setEndTime(executorRemoved.time)
     //We don't get any event for host. Will not try to check when the hosts go out of service
@@ -109,6 +118,9 @@ class EventHistoryListener() extends SparkListener{
 
 
   override def onTaskEnd(taskEnd: SparkListenerTaskEnd): Unit = {
+    if(isStreamingApp)
+      return
+
     val taskMetrics = taskEnd.taskMetrics
     val taskInfo    = taskEnd.taskInfo
 
@@ -130,6 +142,9 @@ class EventHistoryListener() extends SparkListener{
 
 
   override def onStageSubmitted(stageSubmitted: SparkListenerStageSubmitted): Unit = {
+    if(isStreamingApp)
+      return
+
     stageMap.getOrElseUpdate(stageSubmitted.stageInfo.stageId, {
         val stageTimeSpan = new StageTimeSpan(stageSubmitted.stageInfo.stageId,
                                   stageSubmitted.stageInfo.numTasks)
@@ -143,6 +158,9 @@ class EventHistoryListener() extends SparkListener{
   }
 
   override def onStageCompleted(stageCompleted: SparkListenerStageCompleted): Unit = {
+    if(isStreamingApp)
+      return
+
     val stageTimeSpan = stageMap(stageCompleted.stageInfo.stageId)
     if (stageCompleted.stageInfo.completionTime.isDefined) {
       stageTimeSpan.setEndTime(stageCompleted.stageInfo.completionTime.get)
