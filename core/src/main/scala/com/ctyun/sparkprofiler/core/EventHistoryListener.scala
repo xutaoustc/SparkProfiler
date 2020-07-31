@@ -60,7 +60,7 @@ class EventHistoryListener() extends SparkListener{
 
 
   override def onJobStart(jobStart: SparkListenerJobStart) {
-    if(jobStart.properties.getProperty("callSite.long").contains("StreamingContext")){
+    if(jobStart.properties.getProperty("callSite.long") !=null && jobStart.properties.getProperty("callSite.long").contains("StreamingContext")){
       isStreamingApp = true
     }
 

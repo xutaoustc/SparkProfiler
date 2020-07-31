@@ -48,7 +48,12 @@ class AggregateMetrics() {
 object AggregateMetrics extends Enumeration {
 
   type Metric = Value
-  val shuffleWriteTime,
+  val
+  taskDuration,
+  executorRuntime,
+  jvmGCTime,
+  executorCpuTime,
+  shuffleWriteTime,
   shuffleWriteBytesWritten,
   shuffleWriteRecordsWritten,
   shuffleReadFetchWaitTime,
@@ -56,15 +61,11 @@ object AggregateMetrics extends Enumeration {
   shuffleReadRecordsRead,
   shuffleReadLocalBlocks,
   shuffleReadRemoteBlocks,
-  executorRuntime,
-  jvmGCTime,
-  executorCpuTime,
   resultSize,
   inputBytesRead,
   outputBytesWritten,
   memoryBytesSpilled,
   diskBytesSpilled,
-  peakExecutionMemory,
-  taskDuration
+  peakExecutionMemory
   = Value
 }
