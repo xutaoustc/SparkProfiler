@@ -1,5 +1,7 @@
 package com.ctyun.sparkprofiler.sink.domain
 
+import com.ctyun.sparkprofiler.core.util.Tabulator
+
 case class SimpleAppSinkInfo(
                             applicationID: String,
                             appName: String,
@@ -14,9 +16,24 @@ case class SimpleAppSinkInfo(
                             inputBytesRead:Long,
                             outputBytesWritten:Long,
                             resultSize:Long,
+                            shuffleWriteBytesWritten:Long,
+                            shuffleWriteRecordsWritten:Long,
+                            shuffleWriteTime:Long,
+                            shuffleReadFetchWaitTime:Long,
+                            shuffleReadBytesRead:Long,
+                            shuffleReadRecordsRead:Long,
+                            shuffleReadLocalBlocks:Long,
+                            shuffleReadRemoteBlocks:Long,
                             startTime:Long,
                             endTime:Long
+                            ){
+  override def toString = Tabulator.format(
+                            List(
+                              classOf[SimpleAppSinkInfo].getDeclaredFields.map(_.getName).toList,
+                              this.productIterator.toList
                             )
+                          )
+}
 
 case class SimpleJobSinkInfo(
                               applicationID: String,
@@ -31,9 +48,24 @@ case class SimpleJobSinkInfo(
                               inputBytesRead:Long,
                               outputBytesWritten:Long,
                               resultSize:Long,
+                              shuffleWriteBytesWritten:Long,
+                              shuffleWriteRecordsWritten:Long,
+                              shuffleWriteTime:Long,
+                              shuffleReadFetchWaitTime:Long,
+                              shuffleReadBytesRead:Long,
+                              shuffleReadRecordsRead:Long,
+                              shuffleReadLocalBlocks:Long,
+                              shuffleReadRemoteBlocks:Long,
                               startTime:Long,
                               endTime:Long
+                            ){
+  override def toString = Tabulator.format(
+                            List(
+                              classOf[SimpleJobSinkInfo].getDeclaredFields.map(_.getName).toList,
+                              this.productIterator.toList
                             )
+                          )
+}
 
 case class SimpleStageSinkInfo(
                               applicationID: String,
@@ -49,6 +81,22 @@ case class SimpleStageSinkInfo(
                               inputBytesRead:Long,
                               outputBytesWritten:Long,
                               resultSize:Long,
+                              shuffleWriteBytesWritten:Long,
+                              shuffleWriteRecordsWritten:Long,
+                              shuffleWriteTime:Long,
+                              shuffleReadFetchWaitTime:Long,
+                              shuffleReadBytesRead:Long,
+                              shuffleReadRecordsRead:Long,
+                              shuffleReadLocalBlocks:Long,
+                              shuffleReadRemoteBlocks:Long,
                               startTime:Long,
                               endTime:Long
+                            ){
+  override def toString = Tabulator.format(
+                            List(
+                              classOf[SimpleStageSinkInfo].getDeclaredFields.map(_.getName).toList,
+                              this.productIterator.toList
                             )
+                          )
+}
+

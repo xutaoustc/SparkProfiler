@@ -15,16 +15,16 @@ class AggregateMetrics() {
     //updateMetric(AggregateMetrics.executorCpuTime,          tm.executorCpuTime) //Nano to Millis
     updateMetric(AggregateMetrics.jvmGCTime,                tm.jvmGCTime)
 
-    updateMetric(AggregateMetrics.resultSize,               tm.resultSize)
-    updateMetric(AggregateMetrics.inputBytesRead,           tm.inputMetrics.bytesRead)
-    updateMetric(AggregateMetrics.outputBytesWritten,       tm.outputMetrics.bytesWritten)
     updateMetric(AggregateMetrics.memoryBytesSpilled,       tm.memoryBytesSpilled)
     updateMetric(AggregateMetrics.diskBytesSpilled,         tm.diskBytesSpilled)
     updateMetric(AggregateMetrics.peakExecutionMemory,      tm.peakExecutionMemory)
+    updateMetric(AggregateMetrics.inputBytesRead,           tm.inputMetrics.bytesRead)
+    updateMetric(AggregateMetrics.outputBytesWritten,       tm.outputMetrics.bytesWritten)
+    updateMetric(AggregateMetrics.resultSize,               tm.resultSize)
 
-    updateMetric(AggregateMetrics.shuffleWriteTime,         tm.shuffleWriteMetrics.writeTime)    //Nano to Millis
     updateMetric(AggregateMetrics.shuffleWriteBytesWritten, tm.shuffleWriteMetrics.bytesWritten)
     updateMetric(AggregateMetrics.shuffleWriteRecordsWritten, tm.shuffleWriteMetrics.recordsWritten)
+    updateMetric(AggregateMetrics.shuffleWriteTime,         tm.shuffleWriteMetrics.writeTime)    //Nano to Millis
     updateMetric(AggregateMetrics.shuffleReadFetchWaitTime, tm.shuffleReadMetrics.fetchWaitTime)    //Nano to Millis
     updateMetric(AggregateMetrics.shuffleReadBytesRead,     tm.shuffleReadMetrics.totalBytesRead)
     updateMetric(AggregateMetrics.shuffleReadRecordsRead,   tm.shuffleReadMetrics.recordsRead)

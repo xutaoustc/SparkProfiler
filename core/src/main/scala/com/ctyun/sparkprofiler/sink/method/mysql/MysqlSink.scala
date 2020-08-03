@@ -14,7 +14,7 @@ class MysqlSink() extends Sink{
     val qr = new QueryRunner(ds);
 
     try{
-      val applicationSQL="replace into application_overview(appId,appName,sparkUser,taskCount,taskDuration,executorRuntime,jvmGCTime,memoryBytesSpilled,diskBytesSpilled,peakExecutionMemory,inputBytesRead,outputBytesWritten,resultSize,startTime,endTime) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+      val applicationSQL="replace into application_overview(appId,appName,sparkUser,taskCount,taskDuration,executorRuntime,jvmGCTime,memoryBytesSpilled,diskBytesSpilled,peakExecutionMemory,inputBytesRead,outputBytesWritten,resultSize,shuffleWriteBytesWritten,shuffleWriteRecordsWritten,shuffleWriteTime,shuffleReadFetchWaitTime,shuffleReadBytesRead,shuffleReadRecordsRead,shuffleReadLocalBlocks,shuffleReadRemoteBlocks,startTime,endTime) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
       qr.update(applicationSQL,
         simpleAppSinkInfo.applicationID,
         simpleAppSinkInfo.appName,
@@ -29,10 +29,18 @@ class MysqlSink() extends Sink{
         simpleAppSinkInfo.inputBytesRead.toString,
         simpleAppSinkInfo.outputBytesWritten.toString,
         simpleAppSinkInfo.resultSize.toString,
+        simpleAppSinkInfo.shuffleWriteBytesWritten.toString,
+        simpleAppSinkInfo.shuffleWriteRecordsWritten.toString,
+        simpleAppSinkInfo.shuffleWriteTime.toString,
+        simpleAppSinkInfo.shuffleReadFetchWaitTime.toString,
+        simpleAppSinkInfo.shuffleReadBytesRead.toString,
+        simpleAppSinkInfo.shuffleReadRecordsRead.toString,
+        simpleAppSinkInfo.shuffleReadLocalBlocks.toString,
+        simpleAppSinkInfo.shuffleReadRemoteBlocks.toString,
         simpleAppSinkInfo.startTime.toString,
         simpleAppSinkInfo.endTime.toString)
 
-      val jobSQL="replace into job_overview(appId,jobID,taskCount,taskDuration,executorRuntime,jvmGCTime,memoryBytesSpilled,diskBytesSpilled,peakExecutionMemory,inputBytesRead,outputBytesWritten,resultSize,startTime,endTime) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+      val jobSQL="replace into job_overview(appId,jobID,taskCount,taskDuration,executorRuntime,jvmGCTime,memoryBytesSpilled,diskBytesSpilled,peakExecutionMemory,inputBytesRead,outputBytesWritten,resultSize,shuffleWriteBytesWritten,shuffleWriteRecordsWritten,shuffleWriteTime,shuffleReadFetchWaitTime,shuffleReadBytesRead,shuffleReadRecordsRead,shuffleReadLocalBlocks,shuffleReadRemoteBlocks,startTime,endTime) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
       simpleJobSinkInfo.foreach(job=>{
         qr.update(jobSQL,
           job.applicationID,
@@ -47,11 +55,19 @@ class MysqlSink() extends Sink{
           job.inputBytesRead.toString,
           job.outputBytesWritten.toString,
           job.resultSize.toString,
+          job.shuffleWriteBytesWritten.toString,
+          job.shuffleWriteRecordsWritten.toString,
+          job.shuffleWriteTime.toString,
+          job.shuffleReadFetchWaitTime.toString,
+          job.shuffleReadBytesRead.toString,
+          job.shuffleReadRecordsRead.toString,
+          job.shuffleReadLocalBlocks.toString,
+          job.shuffleReadRemoteBlocks.toString,
           job.startTime.toString,
           job.endTime.toString)
       })
 
-      val stageSQL="replace into stage_overview(appId,jobID,stageID,taskCount,taskDuration,executorRuntime,jvmGCTime,memoryBytesSpilled,diskBytesSpilled,peakExecutionMemory,inputBytesRead,outputBytesWritten,resultSize,startTime,endTime) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+      val stageSQL="replace into stage_overview(appId,jobID,stageID,taskCount,taskDuration,executorRuntime,jvmGCTime,memoryBytesSpilled,diskBytesSpilled,peakExecutionMemory,inputBytesRead,outputBytesWritten,resultSize,shuffleWriteBytesWritten,shuffleWriteRecordsWritten,shuffleWriteTime,shuffleReadFetchWaitTime,shuffleReadBytesRead,shuffleReadRecordsRead,shuffleReadLocalBlocks,shuffleReadRemoteBlocks,startTime,endTime) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
       simpleStageSinkInfo.foreach(stage=>{
         qr.update(stageSQL,
           stage.applicationID,
@@ -67,6 +83,14 @@ class MysqlSink() extends Sink{
           stage.inputBytesRead.toString,
           stage.outputBytesWritten.toString,
           stage.resultSize.toString,
+          stage.shuffleWriteBytesWritten.toString,
+          stage.shuffleWriteRecordsWritten.toString,
+          stage.shuffleWriteTime.toString,
+          stage.shuffleReadFetchWaitTime.toString,
+          stage.shuffleReadBytesRead.toString,
+          stage.shuffleReadRecordsRead.toString,
+          stage.shuffleReadLocalBlocks.toString,
+          stage.shuffleReadRemoteBlocks.toString,
           stage.startTime.toString,
           stage.endTime.toString)
       })
