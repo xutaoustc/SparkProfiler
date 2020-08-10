@@ -45,11 +45,10 @@ class CustomDirectoryMonitorReceiver(path:String)
         return
       }catch{
         case x:Exception => {
-          if(i==3)
-            throw x
-          else
-          {
+          if(i==3) {
             x.printStackTrace()
+          }
+          else {
             i+=1
           }
         }
@@ -64,6 +63,7 @@ class CustomDirectoryMonitorReceiver(path:String)
         val completed = Option(fs.listStatus(new Path(path))).map(_.toSeq).getOrElse(Nil)
           .flatMap( status => {
             if(!cache.asMap().containsKey(status)){
+              println(s"ready to parse ${status.getPath}")
               val reader = EventLogFileReader(fs, status)
               reader.flatMap( reader => Option((status,reader)) )
             }else Nil
